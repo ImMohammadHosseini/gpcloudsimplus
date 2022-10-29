@@ -1,7 +1,7 @@
-package org.cloudbus.cloudsim.gp.provisioners;
+package org.cloudbus.cloudsim.provisioners;
 
-import org.cloudbus.cloudsim.gp.resources.GpuCore;
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
+import org.cloudbus.cloudsim.resources.gpu.GpuCore;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 
 public interface CoreProvisioner extends GpuResourceProvisioner {
 

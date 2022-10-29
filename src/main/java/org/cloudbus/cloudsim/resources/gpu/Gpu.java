@@ -11,13 +11,13 @@ import org.gpucloudsimplus.listeners.GpuUpdatesVgpusProcessingEventInfo;
 import org.gpucloudsimplus.listeners.GpuEventInfo;
 import org.cloudsimplus.listeners.EventListener;
 
-import org.cloudbus.cloudsim.gp.provisioners.GpuResourceProvisioner;
+import org.cloudbus.cloudsim.provisioners.GpuResourceProvisioner;
 import org.cloudbus.cloudsim.gp.core.GpuResourceStatsComputer;
 import org.cloudbus.cloudsim.gp.schedulers.vgpu.VGpuScheduler;
 import org.cloudbus.cloudsim.gp.videocards.Videocard;
-import org.cloudbus.cloudsim.gp.resources.GpuCore;
+import org.cloudbus.cloudsim.resources.gpu.GpuCore;
 import org.cloudbus.cloudsim.gp.core.AbstractGpu;
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 
 public interface Gpu extends ChangeableId, Comparable<Gpu>, AbstractGpu, 
 GpuResourceStatsComputer<GpuResourceStats> {

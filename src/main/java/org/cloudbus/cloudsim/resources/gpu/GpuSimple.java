@@ -1,4 +1,4 @@
-package org.cloudbus.cloudsim.gp.resources;
+package org.cloudbus.cloudsim.resources.gpu;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -20,8 +20,8 @@ import org.gpucloudsimplus.listeners.GpuEventInfo;
 
 import org.gpucloudsimplus.listeners.GpuUpdatesVgpusProcessingEventInfo;
 
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
-import org.cloudbus.cloudsim.gp.vgpu.VGpuSimple;
+import org.cloudbus.cloudsim.vgpu.VGpu;
+import org.cloudbus.cloudsim.vgpu.VGpuSimple;
 import org.cloudbus.cloudsim.gp.videocards.Videocard;
 import org.cloudbus.cloudsim.gp.vgpu.VGpuStateHistoryEntry;
 import org.cloudbus.cloudsim.gp.videocards.VideocardSimple;

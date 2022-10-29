@@ -1,7 +1,7 @@
-package org.cloudbus.cloudsim.gp.resources;
+package org.cloudbus.cloudsim.resources.gpu;
 
-import org.cloudbus.cloudsim.gp.provisioners.CoreProvisioner;
-import org.cloudbus.cloudsim.gp.provisioners.CoreProvisionerSimple;
+import org.cloudbus.cloudsim.provisioners.CoreProvisioner;
+import org.cloudbus.cloudsim.provisioners.CoreProvisionerSimple;
 
 final class GpuCoreNull implements GpuCore {
     @Override public long getAvailableResource () {

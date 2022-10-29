@@ -1,11 +1,11 @@
-package org.cloudbus.cloudsim.gp.resources;
+package org.cloudbus.cloudsim.resources.gpu;
 
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 import org.cloudbus.cloudsim.core.Simulation;
-import org.cloudbus.cloudsim.gp.core.AbstractGpu;
-import org.cloudbus.cloudsim.gp.provisioners.GpuResourceProvisioner;
-import org.cloudbus.cloudsim.gp.schedulers.vgpu.VGpuScheduler;
-import org.cloudbus.cloudsim.gp.videocards.Videocard;
+import org.cloudbus.cloudsim.core.AbstractGpu;
+import org.cloudbus.cloudsim.provisioners.GpuResourceProvisioner;
+import org.cloudbus.cloudsim.schedulers.vgpu.VGpuScheduler;
+import org.cloudbus.cloudsim.videocards.Videocard;
 import org.cloudbus.cloudsim.resources.Pe;
 import org.cloudbus.cloudsim.resources.Resource;
 import org.cloudbus.cloudsim.resources.ResourceManageable;
