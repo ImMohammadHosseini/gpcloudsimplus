@@ -1,4 +1,4 @@
-package org.cloudbus.cloudsim.gp.resources;
+package org.cloudbus.cloudsim.resources.gpu;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
