@@ -1,9 +1,9 @@
 package org.cloudbus.cloudsim.gp.vgpu;
 
-import org.cloudbus.cloudsim.gp.vms.GpuVm;
-import org.cloudbus.cloudsim.gp.resources.Gpu;
-import org.cloudbus.cloudsim.gp.vms.GpuVmNull;
-import org.cloudbus.cloudsim.gp.vms.GpuVmSimple;
+import org.cloudbus.cloudsim.vms.Vm;
+import org.cloudbus.cloudsim.resources.gpu.Gpu;
+import org.cloudbus.cloudsim.vms.VmNull;
+import org.cloudbus.cloudsim.vms.VmSimple;
 import org.cloudbus.cloudsim.gp.core.AbstractGpu;
 import org.cloudbus.cloudsim.gp.resources.VGpuCore;
 import org.cloudbus.cloudsim.gp.videocards.Videocard;

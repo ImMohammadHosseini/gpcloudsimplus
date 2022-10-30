@@ -19,6 +19,7 @@ import org.cloudbus.cloudsim.hosts.Host;
 import org.cloudbus.cloudsim.resources.*;
 import org.cloudbus.cloudsim.schedulers.MipsShare;
 import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletScheduler;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 import org.cloudsimplus.autoscaling.HorizontalVmScaling;
 import org.cloudsimplus.autoscaling.VerticalVmScaling;
 import org.cloudsimplus.listeners.EventListener;
@@ -747,4 +748,10 @@ public interface Vm extends AbstractMachine<Resource>, UniquelyIdentifiable, Com
      */
     @Override
     Vm setTimeZone(double timeZone);
+    
+    Vm setVGpu (final VGpu vgpu); 
+     
+    boolean hasVGpu (); 
+    
+    VGpu getVGpu ();
 }

@@ -14,6 +14,7 @@ import org.cloudbus.cloudsim.core.events.CloudSimEvent;
 import org.cloudbus.cloudsim.core.events.SimEvent;
 import org.cloudbus.cloudsim.datacenters.Datacenter;
 import org.cloudbus.cloudsim.datacenters.TimeZoned;
+import org.cloudbus.cloudsim.gp.vgpu.VGpuSimple;
 import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletScheduler;
 import org.cloudbus.cloudsim.util.InvalidEventDataTypeException;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
@@ -779,7 +780,8 @@ public abstract class DatacenterBrokerAbstract extends CloudSimEntity implements
     private boolean processCloudletReturn(final SimEvent evt) {
         final var cloudlet = (Cloudlet) evt.getData();
         cloudletsFinishedList.add(cloudlet);
-        ((VmSimple) cloudlet.getVm()).addExpectedFreePesNumber(cloudlet.getNumberOfPes());
+        //((VmSimple) cloudlet.getVm()).addExpectedFreePesNumber(cloudlet.getNumberOfPes());
+        ((VmSimple) cloudlet.getVm()).addExpectedFreePesAndCores(cloudlet);
         final String lifeTime = cloudlet.getLifeTime() == -1 ? "" : " (after defined lifetime expired)";
         LOGGER.info(
             "{}: {}: {} finished{} in {} and returned to broker.",
@@ -896,7 +898,8 @@ public abstract class DatacenterBrokerAbstract extends CloudSimEntity implements
      * @return true if a message to check VM idleness has to be sent, false otherwise
      */
     private boolean isVmIdlenessVerificationRequired(final VmSimple vm) {
-        if(vm.hasStartedSomeCloudlet() && vm.getCloudletScheduler().isEmpty()){
+        if(vm.hasStartedSomeCloudlet() && vm.getCloudletScheduler().isEmpty() && 
+        		vm.getVGpu().getGpuTaskScheduler().isEmpty()){
             final int schedulingInterval = (int)vm.getHost().getDatacenter().getSchedulingInterval();
             final int delay = vmDestructionDelayFunction.apply(vm).intValue();
             return delay > DEF_VM_DESTRUCTION_DELAY && (schedulingInterval <= 0 || delay % schedulingInterval != 0);
@@ -986,8 +989,9 @@ public abstract class DatacenterBrokerAbstract extends CloudSimEntity implements
                 continue;
             }
 
-            ((VmSimple) lastSelectedVm).removeExpectedFreePesNumber(cloudlet.getNumberOfPes());
-
+            //((VmSimple) lastSelectedVm).removeExpectedFreePesNumber(cloudlet.getNumberOfPes());
+            ((VmSimple) lastSelectedVm).removeExpectedFreePesAndCores(cloudlet);
+            
             logCloudletCreationRequest(cloudlet);
             cloudlet.setVm(lastSelectedVm);
             final Datacenter dc = getDatacenter(lastSelectedVm);

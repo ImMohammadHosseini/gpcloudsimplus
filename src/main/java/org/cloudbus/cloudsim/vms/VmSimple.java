@@ -12,6 +12,8 @@ import org.cloudbus.cloudsim.cloudlets.Cloudlet;
 import org.cloudbus.cloudsim.core.AbstractMachine;
 import org.cloudbus.cloudsim.core.CustomerEntityAbstract;
 import org.cloudbus.cloudsim.datacenters.Datacenter;
+import org.cloudbus.cloudsim.vgpu.VGpu;
+import org.cloudbus.cloudsim.vgpu.VGpuSimple;
 import org.cloudbus.cloudsim.hosts.Host;
 import org.cloudbus.cloudsim.resources.*;
 import org.cloudbus.cloudsim.schedulers.MipsShare;
@@ -113,6 +115,7 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
     private MipsShare allocatedMips;
     private MipsShare requestedMips;
 
+    private VGpu vgpu;
     /**
      * A copy constructor that creates a VM based on the configuration of another one.
      * The created VM will have the same MIPS capacity, number of PEs,
@@ -120,8 +123,8 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
      * @param sourceVm the VM to be cloned
      * @see #VmSimple(double, long)
      */
-    public VmSimple(final Vm sourceVm) {
-        this(sourceVm.getMips(), sourceVm.getNumberOfPes());
+    public VmSimple(final Vm sourceVm, final VGpu vgpu) {
+        this(sourceVm.getMips(), sourceVm.getNumberOfPes(), vgpu);
         this.setBw(sourceVm.getBw().getCapacity())
             .setRam(sourceVm.getRam().getCapacity())
             .setSize(sourceVm.getStorage().getCapacity());
@@ -147,8 +150,8 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
      * @see #setDefaultBwCapacity(long)
      * @see #setDefaultStorageCapacity(long)
      */
-    public VmSimple(final double mipsCapacity, final long numberOfPes) {
-        this(-1, mipsCapacity, numberOfPes);
+    public VmSimple(final double mipsCapacity, final long numberOfPes, final VGpu vgpu) {
+        this(-1, mipsCapacity, numberOfPes, vgpu);
     }
 
     /**
@@ -168,8 +171,9 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
      * @see #setDefaultBwCapacity(long)
      * @see #setDefaultStorageCapacity(long)
      */
-    public VmSimple(final double mipsCapacity, final long numberOfPes, final CloudletScheduler cloudletScheduler) {
-        this(-1, mipsCapacity, numberOfPes);
+    public VmSimple(final double mipsCapacity, final long numberOfPes, 
+    		final CloudletScheduler cloudletScheduler, final VGpu vgpu) {
+        this(-1, mipsCapacity, numberOfPes, vgpu);
         setCloudletScheduler(cloudletScheduler);
     }
 
@@ -196,8 +200,9 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
      * @see #setDefaultBwCapacity(long)
      * @see #setDefaultStorageCapacity(long)
      */
-    public VmSimple(final long id, final double mipsCapacity, final long numberOfPes) {
-        this(id, (long) mipsCapacity, numberOfPes);
+    public VmSimple(final long id, final double mipsCapacity, final long numberOfPes, 
+    		final VGpu vgpu) {
+        this(id, (long) mipsCapacity, numberOfPes, vgpu);
     }
 
     /**
@@ -219,7 +224,7 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
      * @see #setDefaultBwCapacity(long)
      * @see #setDefaultStorageCapacity(long)
      */
-    public VmSimple(final long id, final long mipsCapacity, final long numberOfPes) {
+    public VmSimple(final long id, final long mipsCapacity, final long numberOfPes, final VGpu vgpu) {
         super();
         setId(id);
         this.resources = new ArrayList<>(4);
@@ -242,6 +247,8 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
         //initiate number of free PEs as number of PEs of VM
         freePesNumber = numberOfPes;
         expectedFreePesNumber = numberOfPes;
+        
+        setVGpu(vgpu);
     }
 
     private void mutableAttributesInit() {
@@ -300,7 +307,11 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
          * before the utilization drop.
          */
         final double decimals = currentTime - (int) currentTime;
-        return nextSimulationDelay - decimals < 0 ? nextSimulationDelay : nextSimulationDelay - decimals;
+        final double vmUpdatProcessing = nextSimulationDelay - decimals < 0 ? nextSimulationDelay : 
+        	nextSimulationDelay - decimals;
+        final double vgpuUpdateProcessing = vgpu.updateGpuTaskProcessing(
+        		vgpu.getGpu().getVGpuScheduler().getAllocatedMips(vgpu));
+        return max (vmUpdatProcessing, vgpuUpdateProcessing);
     }
 
     @Override
@@ -326,6 +337,10 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
         return expectedFreePesNumber;
     }
 
+    public Vm addExpectedFreePesAndCores (final Cloudlet cloudlet) {
+    	((VGpuSimple) vgpu).addExpectedFreeCoresNumber(cloudlet.getGpuTask().getNumberOfCores());
+    	return addExpectedFreePesNumber(cloudlet.getNumberOfPes());
+    }
     /**
      * Adds a given number of expected free PEs to the total number of expected free PEs.
      * This value is updated as cloudlets are assigned to VMs but not submitted to the broker for running yet.
@@ -336,6 +351,10 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
         return setExpectedFreePesNumber(expectedFreePesNumber + pesToAdd);
     }
 
+    public Vm removeExpectedFreePesAndCores(final Cloudlet cloudlet) {
+    	((VGpuSimple) vgpu).removeExpectedFreeCoresNumber(cloudlet.getGpuTask().getNumberOfCores());
+    	return removeExpectedFreePesNumber (cloudlet.getNumberOfPes());
+    }
     /**
      * Adds a given number of expected free PEs to the total number of expected free PEs.
      * This value is updated as cloudlets are assigned to VMs but not submitted to the broker for running yet.
@@ -459,6 +478,7 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
 
         this.startTime = startTime;
         setLastBusyTime(startTime);
+        vgpu.setStartTime(startTime);
         return this;
     }
 
@@ -470,6 +490,7 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
     @Override
     public Vm setStopTime(final double stopTime) {
         this.stopTime = Math.max(stopTime, -1);
+        vgpu.setStartTime(stopTime);
         return this;
     }
 
@@ -532,7 +553,7 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
     public Processor getProcessor() {
         return processor;
     }
-
+ta inja
     @Override
     public ResourceManageable getRam() {
         return ram;
@@ -1099,5 +1120,21 @@ public class VmSimple extends CustomerEntityAbstract implements Vm {
 
     public void setRequestedMips(final MipsShare requestedMips) {
         this.requestedMips = requireNonNull(requestedMips);
+    }
+    
+    @Override
+    public Vm setVGpu (final VGpu vgpu) {
+    	this.vgpu = vgpu;
+    	return this;
+    }
+    
+    @Override 
+    public boolean hasVGpu () {
+    	return getVGpu() != VGpu.NULL;
+    }
+    
+    @Override
+    public VGpu getVGpu () {
+    	return vgpu;
     }
 }
