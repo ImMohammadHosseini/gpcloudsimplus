@@ -1,11 +1,11 @@
-package org.cloudbus.cloudsim.gp.schedulers.vgpu;
+package org.cloudbus.cloudsim.schedulers.vgpu;
 
-import org.cloudbus.cloudsim.gp.resources.GpuSimple;
+import org.cloudbus.cloudsim.resources.gpu.GpuSimple;
 import org.cloudbus.cloudsim.schedulers.MipsShare;
-import org.cloudbus.cloudsim.gp.resources.GpuCore;
-import org.cloudbus.cloudsim.gp.vgpu.VGpuSimple;
-import org.cloudbus.cloudsim.gp.resources.Gpu;
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
+import org.cloudbus.cloudsim.resources.gpu.GpuCore;
+import org.cloudbus.cloudsim.vgpu.VGpuSimple;
+import org.cloudbus.cloudsim.resources.gpu.Gpu;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 
 import java.util.*;
 import java.util.stream.Stream;

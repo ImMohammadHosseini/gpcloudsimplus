@@ -191,7 +191,7 @@ GpuResourceStatsComputer<GpuResourceStats> {
     
     Gpu setSimulation (Simulation simulation);
     
-    //Simulation getSimulation ();
+    Simulation getSimulation ();
     
     //double getStartTime ();
     

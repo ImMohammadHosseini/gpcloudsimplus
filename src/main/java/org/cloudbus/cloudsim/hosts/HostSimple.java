@@ -9,6 +9,7 @@ package org.cloudbus.cloudsim.hosts;
 import org.cloudbus.cloudsim.core.*;
 import org.cloudbus.cloudsim.datacenters.Datacenter;
 import org.cloudbus.cloudsim.datacenters.DatacenterSimple;
+import org.cloudbus.cloudsim.gp.allocationpolicies.VGpuAllocationPolicy;
 import org.cloudbus.cloudsim.power.models.PowerModelHost;
 import org.cloudbus.cloudsim.provisioners.PeProvisioner;
 import org.cloudbus.cloudsim.provisioners.ResourceProvisioner;
@@ -23,6 +24,8 @@ import org.cloudbus.cloudsim.vms.*;
 import org.cloudsimplus.listeners.EventListener;
 import org.cloudsimplus.listeners.HostEventInfo;
 import org.cloudsimplus.listeners.HostUpdatesVmsProcessingEventInfo;
+
+import org.cloudbus.cloudsim.resources.gpu.Gpu;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -103,11 +106,15 @@ public class HostSimple implements Host {
     /** @see #getVmScheduler() */
     private VmScheduler vmScheduler;
 
+	//private VGpuAllocationPolicy vgpuAllocationPolicy;
+
     /** @see #getVmList() */
     private final List<Vm> vmList = new ArrayList<>();
 
     /** @see #getPeList() */
     private List<Pe> peList;
+    
+    private List <Gpu> gpuList;
 
     /** @see #getVmsMigratingIn() */
     private final Set<Vm> vmsMigratingIn;
@@ -1367,7 +1374,8 @@ public class HostSimple implements Host {
      * @param currentTime the current simulation time
      * @return the total allocated MIPS for the given VM
      */
-    private double addVmResourceUseToHistoryIfNotMigratingIn(final Vm vm, final double currentTime) {
+    private double addVmResourceUseToHistoryIfNotMigratingIn(final Vm vm, final double currentTime)**
+    has vm{
         double totalAllocatedMips = getVmScheduler().getTotalAllocatedMipsForVm(vm);
         if (getVmsMigratingIn().contains(vm)) {
             LOGGER.info("{}: {}: {} is migrating in", getSimulation().clockStr(), this, vm);
