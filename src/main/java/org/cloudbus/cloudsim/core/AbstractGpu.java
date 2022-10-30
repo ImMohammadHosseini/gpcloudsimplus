@@ -1,4 +1,4 @@
-package org.cloudbus.cloudsim.gp.core;
+package org.cloudbus.cloudsim.core;
 
 import org.cloudbus.cloudsim.core.Simulation;
 import org.cloudbus.cloudsim.core.ChangeableId;

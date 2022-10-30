@@ -1,7 +1,7 @@
-package org.cloudbus.cloudsim.gp.vgpu;
+package org.cloudbus.cloudsim.vgpu;
 
-import org.cloudbus.cloudsim.gp.core.GResourceStats;
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
+import org.cloudbus.cloudsim.core.GResourceStats;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 
 import java.util.function.Function;
 

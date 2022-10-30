@@ -15,6 +15,7 @@ import org.cloudbus.cloudsim.resources.ResourceManageable;
 import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletScheduler;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
 import org.cloudbus.cloudsim.vms.Vm;
+import org.cloudbus.cloudsim.cloudlets.gputasks.GpuTask;
 import org.cloudsimplus.listeners.CloudletVmEventInfo;
 import org.cloudsimplus.listeners.EventListener;
 import org.cloudsimplus.traces.google.GoogleTaskEventsTraceReader;
@@ -760,4 +761,10 @@ public interface Cloudlet extends UniquelyIdentifiable, Comparable<Cloudlet>, Cu
      * @see #setLifeTime(double)
      */
 	double getLifeTime();
+	
+	boolean hasGpuTask ();
+	
+	GpuTask getGpuTask ();
+	
+	Cloudlet setGpuTask (GpuTask gpuTask);
 }

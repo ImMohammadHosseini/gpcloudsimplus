@@ -8,6 +8,7 @@
 package org.cloudbus.cloudsim.cloudlets;
 
 import org.cloudbus.cloudsim.brokers.DatacenterBroker;
+import org.cloudbus.cloudsim.cloudlets.gputasks.GpuTask;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import org.cloudbus.cloudsim.vms.Vm;
@@ -40,8 +41,9 @@ public class CloudletSimple extends CloudletAbstract {
      * @see #setUtilizationModelRam(UtilizationModel)
      * @see #setUtilizationModelBw(UtilizationModel)
      */
-    public CloudletSimple(final long length, final int pesNumber, final UtilizationModel utilizationModel) {
-        super(length, pesNumber, utilizationModel);
+    public CloudletSimple(final long length, final int pesNumber, 
+    		final UtilizationModel utilizationModel, final GpuTask gpuTask) {
+        super(length, pesNumber, utilizationModel, gpuTask);
     }
 
     /**
@@ -57,8 +59,8 @@ public class CloudletSimple extends CloudletAbstract {
      *               (check out {@link #setLength(long)})
      * @param pesNumber number of PEs that Cloudlet will require
      */
-    public CloudletSimple(final long length, final int pesNumber) {
-        super(length, pesNumber);
+    public CloudletSimple(final long length, final int pesNumber, final GpuTask gpuTask) {
+        super(length, pesNumber, gpuTask);
     }
 
     /**
@@ -74,8 +76,8 @@ public class CloudletSimple extends CloudletAbstract {
      *               (check out {@link #setLength(long)})
      * @param pesNumber number of PEs that Cloudlet will require
      */
-    public CloudletSimple(final long length, final long pesNumber) {
-        super(length, pesNumber);
+    public CloudletSimple(final long length, final long pesNumber, final GpuTask gpuTask) {
+        super(length, pesNumber, gpuTask);
     }
 
     /**
@@ -90,8 +92,9 @@ public class CloudletSimple extends CloudletAbstract {
      *               (check out {@link #setLength(long)})
      * @param pesNumber the pes number
      */
-    public CloudletSimple(final long id, final long length, final long pesNumber) {
-        super(id, length, pesNumber);
+    public CloudletSimple(final long id, final long length, final long pesNumber, 
+    		final GpuTask gpuTask) {
+        super(id, length, pesNumber, gpuTask);
     }
 
     @Override

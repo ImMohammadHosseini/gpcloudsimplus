@@ -14,7 +14,7 @@ import org.cloudbus.cloudsim.core.events.CloudSimEvent;
 import org.cloudbus.cloudsim.core.events.SimEvent;
 import org.cloudbus.cloudsim.datacenters.Datacenter;
 import org.cloudbus.cloudsim.datacenters.TimeZoned;
-import org.cloudbus.cloudsim.gp.vgpu.VGpuSimple;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletScheduler;
 import org.cloudbus.cloudsim.util.InvalidEventDataTypeException;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;

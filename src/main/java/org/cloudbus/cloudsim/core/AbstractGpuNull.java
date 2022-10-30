@@ -1,11 +1,11 @@
-package org.cloudbus.cloudsim.gp.core;
+package org.cloudbus.cloudsim.core;
 
 import org.cloudbus.cloudsim.core.Simulation;
 import org.cloudbus.cloudsim.resources.Resource;
 import org.cloudbus.cloudsim.resources.ResourceManageable;
 
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
-import org.cloudbus.cloudsim.gp.resources.Gpu;
+import org.cloudbus.cloudsim.vgpu.VGpu;
+import org.cloudbus.cloudsim.resources.gpu.Gpu;
 
 import java.util.Collections;
 import java.util.List;

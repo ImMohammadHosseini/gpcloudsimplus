@@ -1,8 +1,8 @@
-package org.cloudbus.cloudsim.gp.core;
+package org.cloudbus.cloudsim.core;
 
-import org.cloudbus.cloudsim.gp.resources.Gpu;
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
-import org.cloudbus.cloudsim.gp.videocards.Videocard;
+import org.cloudbus.cloudsim.resources.gpu.Gpu;
+import org.cloudbus.cloudsim.vgpu.VGpu;
+//import org.cloudbus.cloudsim.gp.videocards.Videocard;
 
 public interface GpuResourceStatsComputer<T extends GResourceStats> {
 	

@@ -16,6 +16,8 @@ import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import org.cloudbus.cloudsim.vms.Vm;
 import org.cloudbus.cloudsim.vms.VmGroup;
+import org.cloudbus.cloudsim.cloudlets.gputasks.GpuTask;
+import org.cloudbus.cloudsim.cloudlets.gputasks.GpuTaskSimple;
 import org.cloudsimplus.listeners.CloudletVmEventInfo;
 import org.cloudsimplus.listeners.EventListener;
 
@@ -98,6 +100,8 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
 
     /** @see #getArrivalTime() */
     private double arrivalTime;
+    
+    private GpuTask gpuTask;
 
     /**
      * Creates a Cloudlet with no priority or id. The id is defined when the Cloudlet is
@@ -114,8 +118,9 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
      * @see #setUtilizationModelRam(UtilizationModel)
      * @see #setUtilizationModelBw(UtilizationModel)
      */
-    public CloudletAbstract(final long length, final int pesNumber, final UtilizationModel utilizationModel) {
-        this(-1, length, pesNumber);
+    public CloudletAbstract(final long length, final int pesNumber, 
+    		final UtilizationModel utilizationModel, final GpuTask gpuTask) {
+        this(-1, length, pesNumber, gpuTask);
         setUtilizationModel(utilizationModel);
     }
 
@@ -132,8 +137,8 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
      *               (check out {@link #setLength(long)})
      * @param pesNumber number of PEs that Cloudlet will require
      */
-    public CloudletAbstract(final long length, final int pesNumber) {
-        this(-1, length, pesNumber);
+    public CloudletAbstract(final long length, final int pesNumber, final GpuTask gpuTask) {
+        this(-1, length, pesNumber, gpuTask);
     }
 
     /**
@@ -148,8 +153,8 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
      *               (check out {@link #setLength(long)})
      * @param pesNumber number of PEs that Cloudlet will require
      */
-    public CloudletAbstract(final long length, final long pesNumber) {
-        this(-1, length, pesNumber);
+    public CloudletAbstract(final long length, final long pesNumber, final GpuTask gpuTask) {
+        this(-1, length, pesNumber, gpuTask);
     }
 
     /**
@@ -164,7 +169,8 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
      *               (check out {@link #setLength(long)})
      * @param pesNumber number of PEs that Cloudlet will require
      */
-    public CloudletAbstract(final long id, final long length, final long pesNumber) {
+    public CloudletAbstract(final long id, final long length, final long pesNumber, 
+    		final GpuTask gpuTask) {
         super();
 
         this.requiredFiles = new LinkedList<>();
@@ -176,7 +182,8 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
         this.setOutputSize(1);
         this.setSubmissionDelay(0.0);
         this.setArrivalTime(-1);
-
+        this.setGpuTask(gpuTask);
+        
         this.reset();
 
         setUtilizationModelCpu(new UtilizationModelFull());
@@ -185,6 +192,7 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
         onStartListeners = new HashSet<>();
         onFinishListeners = new HashSet<>();
         onUpdateProcessingListeners = new HashSet<>();
+        
     }
 
     @Override
@@ -202,6 +210,8 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
         setLifeTime(-1);
 
         this.setLastTriedDatacenter(Datacenter.NULL);
+        
+        gpuTask.reset();
         return this;
     }
 
@@ -212,29 +222,34 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
         setUtilizationModelCpu(utilizationModel);
         return this;
     }
-
+    
+    /*/TODO COMMENT THIS METHOD*/
     @Override
     public Cloudlet addOnUpdateProcessingListener(final EventListener<CloudletVmEventInfo> listener) {
         this.onUpdateProcessingListeners.add(requireNonNull(listener));
         return this;
     }
 
+    /*/TODO COMMENT THIS METHOD*/
     @Override
     public boolean removeOnUpdateProcessingListener(final EventListener<CloudletVmEventInfo> listener) {
         return this.onUpdateProcessingListeners.remove(listener);
     }
 
+    /*/TODO COMMENT THIS METHOD*/
     @Override
     public Cloudlet addOnStartListener(final EventListener<CloudletVmEventInfo> listener) {
         this.onStartListeners.add(requireNonNull(listener));
         return this;
     }
 
+    /*/TODO COMMENT THIS METHOD*/
     @Override
     public boolean removeOnStartListener(final EventListener<CloudletVmEventInfo> listener) {
         return onStartListeners.remove(listener);
     }
 
+    /*/TODO COMMENT THIS METHOD*/
     @Override
     public Cloudlet addOnFinishListener(final EventListener<CloudletVmEventInfo> listener) {
         if(listener.equals(EventListener.NULL)){
@@ -245,16 +260,18 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
         return this;
     }
 
+    /*/TODO COMMENT THIS METHOD*/
     @Override
     public boolean removeOnFinishListener(final EventListener<CloudletVmEventInfo> listener) {
         return onFinishListeners.remove(listener);
     }
 
+    /*/TODO COMMENT THIS METHOD*/
     @Override
     public void notifyOnUpdateProcessingListeners(final double time) {
         onUpdateProcessingListeners.forEach(listener -> listener.update(CloudletVmEventInfo.of(listener, time, this)));
     }
-
+TA INJA
     @Override
     public final Cloudlet setLength(final long length) {
         if (length == 0) {
@@ -309,7 +326,7 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
     public long getNumberOfPes() {
         return numberOfPes;
     }
-
+ta inja
     @Override
     public long getFinishedLengthSoFar() {
         if(getLength() > 0) {
@@ -705,5 +722,23 @@ public abstract class CloudletAbstract extends CustomerEntityAbstract implements
 	@Override
 	public double getLifeTime() {
 		return this.lifeTime;
+	}
+	
+	@Override 
+	public Cloudlet setGpuTask (GpuTask gpuTask) {
+		this.gpuTask = gpuTask;
+		if (gpuTask != null && gpuTask.getCloudlet() == null)
+			gpuTask.setCloudlet(this);
+		return this;
+	}
+	
+	@Override
+	public GpuTask getGpuTask () {
+		return gpuTask;
+	}
+	
+	@Override
+	public boolean hasGpuTask () {
+		return gpuTask != GpuTask.NULL;
 	}
 }

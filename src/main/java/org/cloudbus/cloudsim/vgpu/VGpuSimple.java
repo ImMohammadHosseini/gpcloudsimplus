@@ -2,13 +2,12 @@ package org.cloudbus.cloudsim.vgpu;
 
 import org.cloudbus.cloudsim.vms.Vm;
 import org.cloudbus.cloudsim.resources.gpu.Gpu;
-import org.cloudbus.cloudsim.vms.VmNull;
-import org.cloudbus.cloudsim.gp.vms.GpuVmSimple;
-import org.cloudbus.cloudsim.gp.resources.VGpuCore;
+import org.cloudbus.cloudsim.vms.VmSimple;
+import org.cloudbus.cloudsim.resources.gpu.VGpuCore;
 import org.cloudbus.cloudsim.gp.videocards.Videocard;
-import org.cloudbus.cloudsim.gp.cloudlets.GpuCloudlet;
-import org.cloudbus.cloudsim.gp.cloudlets.gputasks.GpuTask;
-import org.cloudbus.cloudsim.gp.schedulers.gputask.GpuTaskScheduler;
+import org.cloudbus.cloudsim.cloudlets.Cloudlet;
+import org.cloudbus.cloudsim.cloudlets.gputasks.GpuTask;
+import org.cloudbus.cloudsim.schedulers.gputask.GpuTaskScheduler;
 import org.cloudbus.cloudsim.gp.schedulers.gputask.GpuTaskSchedulerTimeShared;
 
 import org.gpucloudsimplus.listeners.VGpuVideocardEventInfo;
@@ -37,7 +36,7 @@ public class VGpuSimple implements VGpu {
 	private String tenancy;
 	private int PCIeBw;
 	
-	private GpuVm gpuVm;
+	private Vm vm;
 	
 	private Ram gddram;
 	private Bandwidth bw;
@@ -516,7 +515,7 @@ public class VGpuSimple implements VGpu {
     @Override
     public boolean isSuitableForGpuTask (final GpuTask gpuTask) {
         return getNumberOfCores() >= gpuTask.getNumberOfCores() &&
-            gpuVm.getStorage().getAvailableResource() >= gpuTask.getFileSize();
+            vm.getStorage().getAvailableResource() >= gpuTask.getFileSize();
     }
     
     @Override
@@ -661,7 +660,7 @@ public class VGpuSimple implements VGpu {
 
         return Double.compare(getTotalMipsCapacity(), obj.getTotalMipsCapacity()) +
                Long.compare(this.getId(), obj.getId()) +
-               this.getGpuVm().getBroker().compareTo(obj.getGpuVm().getBroker());
+               this.getVm().getBroker().compareTo(obj.getVm().getBroker());
     }
     
     @Override
@@ -674,10 +673,10 @@ public class VGpuSimple implements VGpu {
     }
     
     public void setGpuTasksToFailed() {
-    	getGpuVm().getBroker().getCloudletWaitingList().stream()
-    				.filter(cl -> getGpuVm().equals(cl.getVm()))
+    	getVm().getBroker().getCloudletWaitingList().stream()
+    				.filter(cl -> getVm().equals(cl.getVm()))
     		        .forEach(cl -> cl.setStatus(
-    		        		GpuCloudlet.Status.FAILED_RESOURCE_UNAVAILABLE));
+    		        		Cloudlet.Status.FAILED_RESOURCE_UNAVAILABLE));
 
         /*getBroker().getCloudletWaitingList()
                    .stream()
@@ -932,15 +931,15 @@ public class VGpuSimple implements VGpu {
     }
     
     @Override
-    public GpuVm getGpuVm () {
-    	return gpuVm;
+    public Vm getVm () {
+    	return vm;
     }
     
     @Override
-    public VGpu setGpuVm (GpuVm gpuVm) {
-    	this.gpuVm = gpuVm;
-    	if (!gpuVm.hasVGpu())
-    		gpuVm.setVGpu(this);
+    public VGpu setVm (Vm vm) {
+    	this.vm = vm;
+    	if (!vm.hasVGpu())
+    		vm.setVGpu(this);
     	return this;
     }
     
@@ -966,7 +965,7 @@ public class VGpuSimple implements VGpu {
     
     @Override
     public Simulation getSimulation () {
-    	return gpuVm.getSimulation();
+    	return vm.getSimulation();
     }
     
     @Override

@@ -1,7 +1,7 @@
 package org.cloudbus.cloudsim.cloudlets.gputasks;
 
 
-import org.gpucloudsimplus.listeners.GpuTaskVGpuEventInfo;
+import org.cloudsimplus.listeners.GpuTaskVGpuEventInfo;
 import org.cloudsimplus.listeners.EventListener;
 
 import org.cloudbus.cloudsim.vgpu.VGpu;
@@ -86,7 +86,7 @@ public class GpuTaskSimple implements GpuTask {
     
     @Override
     public String toString() {
-        return String.format("GpuCloudlet %d , GpuTask %d ", gpuCloudlet.getId(), getTaskId());
+        return String.format("GpuCloudlet %d , GpuTask %d ", cloudlet.getId(), getTaskId());
     }
     
     @Override
@@ -300,11 +300,11 @@ public class GpuTaskSimple implements GpuTask {
     
     @Override
     public Cloudlet getCloudlet () {
-    	return gpuCloudlet;
+    	return cloudlet;
     }
     
     @Override
-	public void setGpuCloudlet (Cloudlet Cloudlet) {
+	public void setCloudlet (Cloudlet Cloudlet) {
 		this.cloudlet = cloudlet;
 		
 		if (cloudlet.getGpuTask() == null)

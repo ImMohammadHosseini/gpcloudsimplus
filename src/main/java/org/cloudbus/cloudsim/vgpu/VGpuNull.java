@@ -1,10 +1,10 @@
-package org.cloudbus.cloudsim.gp.vgpu;
+package org.cloudbus.cloudsim.vgpu;
 
-import org.cloudbus.cloudsim.gp.vms.GpuVm;
-import org.cloudbus.cloudsim.gp.resources.Gpu;
-import org.cloudbus.cloudsim.gp.resources.VGpuCore;
+import org.cloudbus.cloudsim.vms.Vm;
+import org.cloudbus.cloudsim.resources.gpu.Gpu;
+import org.cloudbus.cloudsim.resources.gpu.VGpuCore;
 import org.cloudbus.cloudsim.gp.videocards.Videocard;
-import org.cloudbus.cloudsim.gp.cloudlets.gputasks.GpuTask;
+import org.cloudbus.cloudsim.cloudlets.gputasks.GpuTask;
 import org.cloudbus.cloudsim.gp.schedulers.gputask.GpuTaskScheduler;
 
 import org.gpucloudsimplus.listeners.VGpuGpuEventInfo;
@@ -150,8 +150,8 @@ public class VGpuNull implements VGpu {
     @Override public VGpu setDescription (String description) { return this; }
     @Override public String getType () { return ""; }
     @Override public void setType (String type) { /**/ }
-    @Override public GpuVm getGpuVm () { return GpuVm.NULL; } 
-    @Override public VGpu setGpuVm (GpuVm gpuVm) { return this; } 
+    @Override public Vm getVm () { return Vm.NULL; } 
+    @Override public VGpu setVm (Vm vm) { return this; } 
     @Override public int getPCIeBw () {
     	return -1;
     }

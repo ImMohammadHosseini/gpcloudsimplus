@@ -1,15 +1,14 @@
-package org.cloudbus.cloudsim.gp.vgpu;
+package org.cloudbus.cloudsim.vgpu;
 
 import org.cloudbus.cloudsim.vms.Vm;
 import org.cloudbus.cloudsim.resources.gpu.Gpu;
-import org.cloudbus.cloudsim.vms.VmNull;
 import org.cloudbus.cloudsim.vms.VmSimple;
-import org.cloudbus.cloudsim.gp.core.AbstractGpu;
-import org.cloudbus.cloudsim.gp.resources.VGpuCore;
+import org.cloudbus.cloudsim.core.AbstractGpu;
+import org.cloudbus.cloudsim.resources.gpu.VGpuCore;
 import org.cloudbus.cloudsim.gp.videocards.Videocard;
-import org.cloudbus.cloudsim.gp.cloudlets.gputasks.GpuTask;
-import org.cloudbus.cloudsim.gp.core.GpuResourceStatsComputer;
-import org.cloudbus.cloudsim.gp.schedulers.gputask.GpuTaskScheduler;
+import org.cloudbus.cloudsim.cloudlets.gputasks.GpuTask;
+import org.cloudbus.cloudsim.core.GpuResourceStatsComputer;
+import org.cloudbus.cloudsim.schedulers.gputask.GpuTaskScheduler;
 
 import org.cloudbus.cloudsim.resources.Ram;
 import org.cloudbus.cloudsim.core.Simulation;
@@ -58,9 +57,9 @@ GpuResourceStatsComputer<VGpuResourceStats> {
 	
 	String getType ();
 	
-	VGpu setGpuVm (GpuVm gpuVm);
+	VGpu setVm (Vm vm);
 	
-	GpuVm getGpuVm ();
+	Vm getVm ();
 	
 	VGpu setGpuTaskScheduler (GpuTaskScheduler gpuTaskScheduler);
 	

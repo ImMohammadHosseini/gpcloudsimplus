@@ -1,6 +1,6 @@
 package org.cloudbus.cloudsim.cloudlets.gputasks;
 
-import org.gpucloudsimplus.listeners.GpuTaskVGpuEventInfo;
+import org.cloudsimplus.listeners.GpuTaskVGpuEventInfo;
 import org.cloudbus.cloudsim.cloudlets.Cloudlet;
 import org.cloudbus.cloudsim.vgpu.VGpu;
 
@@ -36,7 +36,7 @@ public interface GpuTask extends Comparable<GpuTask> {
 	
 	Simulation getSimulation ();
 	
-	void setGpuCloudlet (Cloudlet Cloudlet);
+	void setCloudlet (Cloudlet Cloudlet);
 	
 	boolean addRequiredFile (String fileName);
 

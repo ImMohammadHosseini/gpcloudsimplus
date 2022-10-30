@@ -1,7 +1,7 @@
 package org.cloudbus.cloudsim.cloudlets.gputasks;
 
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
-import org.gpucloudsimplus.listeners.GpuTaskVGpuEventInfo;
+import org.cloudsimplus.listeners.GpuTaskVGpuEventInfo;
 import org.cloudsimplus.listeners.EventListener;
 
 import java.util.List;
@@ -102,7 +102,7 @@ final class GpuTaskNull implements GpuTask {
     @Override public double getUtilizationOfGddram (double time) {
         return 0.0;
     }
-    @Override public Cloudlet getGpuCloudlet () {
+    @Override public Cloudlet getCloudlet () {
         return Cloudlet.NULL;
     }
     @Override public double getWaitingTime() {
@@ -148,7 +148,7 @@ final class GpuTaskNull implements GpuTask {
     @Override public GpuTask setUtilizationModelGddram (UtilizationModel utilizationModelRam) {
         return GpuTask.NULL;
     }
-    @Override public void setGpuCloudlet (Cloudlet Cloudlet) {/**/}
+    @Override public void setCloudlet (Cloudlet Cloudlet) {/**/}
     @Override public boolean removeOnFinishListener (EventListener<GpuTaskVGpuEventInfo> listener) { 
     	return false; }
     @Override public GpuTask addOnFinishListener (EventListener<GpuTaskVGpuEventInfo> listener) { 
