@@ -1,13 +1,13 @@
-package org.cloudbus.cloudsim.gp.cloudlets.gputasks;
+package org.cloudbus.cloudsim.cloudlets.gputasks;
 
 
 import org.gpucloudsimplus.listeners.GpuTaskVGpuEventInfo;
 import org.cloudsimplus.listeners.EventListener;
 
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
-import org.cloudbus.cloudsim.gp.resources.GpuCore;
-import org.cloudbus.cloudsim.gp.resources.VGpuCore;
-import org.cloudbus.cloudsim.gp.cloudlets.GpuCloudlet;
+import org.cloudbus.cloudsim.vgpu.VGpu;
+import org.cloudbus.cloudsim.resources.gpu.GpuCore;
+import org.cloudbus.cloudsim.resources.gpu.VGpuCore;
+import org.cloudbus.cloudsim.cloudlets.Cloudlet;
 
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
@@ -23,7 +23,7 @@ import static java.util.Objects.requireNonNull;
 public class GpuTaskSimple implements GpuTask {
 	
     private long taskId;
-    private GpuCloudlet gpuCloudlet;
+    private Cloudlet cloudlet;
     private long blockLength;
     private long finishedLengthSoFar;
     private long numberOfCores;
@@ -109,7 +109,7 @@ public class GpuTaskSimple implements GpuTask {
     
     @Override
     public Simulation getSimulation () {
-    	return gpuCloudlet.getSimulation();
+    	return cloudlet.getSimulation();
     }
     
     @Override
@@ -299,16 +299,16 @@ public class GpuTaskSimple implements GpuTask {
     }
     
     @Override
-    public GpuCloudlet getGpuCloudlet () {
+    public Cloudlet getCloudlet () {
     	return gpuCloudlet;
     }
     
     @Override
-	public void setGpuCloudlet (GpuCloudlet gpuCloudlet) {
-		this.gpuCloudlet = gpuCloudlet;
+	public void setGpuCloudlet (Cloudlet Cloudlet) {
+		this.cloudlet = cloudlet;
 		
-		if (gpuCloudlet.getGpuTask() == null)
-			gpuCloudlet.setGpuTask(this);
+		if (cloudlet.getGpuTask() == null)
+			cloudlet.setGpuTask(this);
 	}
 
     @Override

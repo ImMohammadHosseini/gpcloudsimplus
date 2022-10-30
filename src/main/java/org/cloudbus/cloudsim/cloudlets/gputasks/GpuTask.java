@@ -1,8 +1,8 @@
-package org.cloudbus.cloudsim.gp.cloudlets.gputasks;
+package org.cloudbus.cloudsim.cloudlets.gputasks;
 
 import org.gpucloudsimplus.listeners.GpuTaskVGpuEventInfo;
-import org.cloudbus.cloudsim.gp.cloudlets.GpuCloudlet;
-import org.cloudbus.cloudsim.gp.vgpu.VGpu;
+import org.cloudbus.cloudsim.cloudlets.Cloudlet;
+import org.cloudbus.cloudsim.vgpu.VGpu;
 
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModel;
 import org.cloudbus.cloudsim.resources.ResourceManageable;
@@ -32,11 +32,11 @@ public interface GpuTask extends Comparable<GpuTask> {
 	
 	int NOT_ASSIGNED = -1;
 	
-	Cloudlet getGpuCloudlet ();
+	Cloudlet getCloudlet ();
 	
 	Simulation getSimulation ();
 	
-	void setGpuCloudlet (GpuCloudlet GpuCloudlet);
+	void setGpuCloudlet (Cloudlet Cloudlet);
 	
 	boolean addRequiredFile (String fileName);
 
