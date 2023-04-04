@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <a id="top"></a>
 
 <p align="center">
@@ -328,3 +329,7 @@ The guide provides information on the different ways you can contribute,
 such as by requesting a feature, reporting an issue, fixing a bug or providing some new feature.
 
 <p align="right"><a href="#top">:arrow_up:</a></p>
+=======
+# GpuCloudsimPlus
+add gpu support in cloudsimPlus
+>>>>>>> GpuCloudsimPlus/main
